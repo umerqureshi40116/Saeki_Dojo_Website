@@ -131,9 +131,14 @@ p:last-child{margin-bottom:0}
 .btn--crimson:hover{color:var(--crimson);border-color:var(--crimson)}
 .btn--light{--b-bg:var(--washi);--b-fg:var(--ink);--b-bd:var(--washi)}
 .btn--light:hover{color:var(--washi);border-color:var(--washi)}
-.btn--ghost{--b-bg:var(--fg);--b-fg:var(--fg);--b-bd:currentColor}
-.btn--ghost:hover{color:var(--bg)}
-.btn--on-dark{--b-bg:var(--washi);--b-fg:var(--washi);--b-bd:rgba(245,242,234,.45)}
+/* Outline variants: the fill starts BELOW the button and slides up on hover,
+   the inverse of the solid variants. Without this the fill colour and the text
+   colour are the same and the label is invisible. */
+.btn--ghost,.btn--on-dark{--b-bg:var(--fg);--b-fg:var(--fg);--b-bd:currentColor}
+.btn--ghost::before,.btn--on-dark::before{transform:translateY(101%)}
+.btn--ghost:hover::before,.btn--on-dark:hover::before{transform:translateY(0)}
+.btn--ghost:hover,.btn--on-dark:hover{color:var(--bg);border-color:var(--b-bg)}
+.btn--on-dark{--b-bg:var(--washi);--b-fg:var(--washi);--b-bd:rgba(245,242,234,.5)}
 .btn--on-dark:hover{color:var(--ink);border-color:var(--washi)}
 .btn--sm{padding:.8rem 1.5rem;font-size:.66rem}
 
@@ -761,4 +766,229 @@ p:last-child{margin-bottom:0}
   .tab{padding:.85rem 1rem;font-size:.62rem}
   .acc__btn{padding-right:2.4rem}
   .acc__panel > div{padding-right:0}
+}
+
+/* ============================================================
+   13. PHONES
+   Everything above was tuned for tablet down to 720px. Real phones
+   are 360-430px, so this section reworks type scale, spacing,
+   tables, controls and tap targets for that range.
+   ============================================================ */
+@media (max-width:560px){
+
+  /* --- type scale: the desktop minimums were far too large here --- */
+  :root{
+    --step-1:clamp(1rem,.96rem + .3vw,1.12rem);
+    --step-2:clamp(1.25rem,1.1rem + .8vw,1.6rem);
+    --step-3:clamp(1.5rem,1.25rem + 1.6vw,2.2rem);
+    --step-4:clamp(1.85rem,1.4rem + 2.4vw,2.6rem);
+    --step-5:clamp(2.1rem,1.5rem + 3.4vw,3.2rem);
+    --shell:min(1240px,100% - 2.2rem);
+    --shell-narrow:min(880px,100% - 2.2rem);
+    --header-h:64px;
+  }
+  body{line-height:1.66}
+
+  /* --- vertical rhythm: 9vw of section padding was dead space --- */
+  .section{padding-block:clamp(3rem,10vw,4.2rem)}
+  .section--tight{padding-block:clamp(2.2rem,7vw,3rem)}
+  .s-head{margin-bottom:2rem}
+
+  /* --- hero: content overflowed 100svh on shorter phones --- */
+  .hero{min-height:auto}
+  .hero__body{padding-block:8.5rem 3.5rem}
+  .hero h1{max-width:none;letter-spacing:-.015em}
+  .hero__sub{margin-top:1.1rem;font-size:1rem}
+  .hero__actions{margin-top:1.8rem;gap:.7rem;flex-direction:column;align-items:stretch}
+  .hero__meta{
+    display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;
+    margin-top:2.2rem;padding-top:1.5rem;
+  }
+  .hero__meta b{font-size:1.35rem}
+  .hero__meta small{font-size:.55rem;letter-spacing:.18em;color:#c3bdb0}
+  .hero__tag{font-size:.58rem;letter-spacing:.24em;margin-bottom:1.1rem}
+  .hero__tag::before{width:26px}
+  .scroll-cue{display:none}
+  .hero__kanji{font-size:40vw;top:26%;color:rgba(255,255,255,.028)}
+  .phero{min-height:auto}
+  .phero__body{padding-block:8rem 2.8rem}
+  .phero h1{max-width:none}
+  .phero p{margin-top:1rem;font-size:.95rem}
+  .crumbs{font-size:.58rem;letter-spacing:.16em;margin-bottom:1rem}
+
+  /* --- buttons: full width reads as intentional, not cramped --- */
+  .btn{min-height:48px}
+  .hero__actions .btn,
+  .cta-band .btn,
+  .price .btn,
+  .section .btn:not(.btn--sm){width:100%;padding:1.05rem 1.2rem;font-size:.68rem;letter-spacing:.16em}
+  .cta-actions{flex-direction:column;align-items:stretch}
+
+  /* --- header --- */
+  .header.is-stuck .header__inner{height:56px}
+  .brand__mark{width:36px;height:36px}
+  .brand__name{font-size:1rem;letter-spacing:.12em}
+  .brand__sub{font-size:.48rem;letter-spacing:.22em;margin-top:.25rem}
+  .burger{width:44px;height:44px}
+  .burger span{left:12px;width:18px}
+  .mnav__list a{font-size:1.55rem;padding:.16em 0}
+  .mnav__list .num{font-size:.52rem;margin-right:.6rem}
+  .mnav__foot{padding-top:1.6rem;font-size:.78rem}
+
+  /* --- SCHEDULE TABLES: were forcing a 520px sideways scroll.
+         Restructured into stacked rows with inline labels. --- */
+  .table-wrap{overflow-x:visible}
+  .sched{min-width:0;display:block;font-size:.9rem}
+  .sched thead{display:none}
+  .sched tbody,.sched tr{display:block;width:100%}
+  .sched tr{padding:1rem 0;border-bottom:1px solid var(--washi-3)}
+  .section--dark .sched tr,.section--ink2 .sched tr{border-color:rgba(255,255,255,.12)}
+  .sched tr:last-child{border-bottom:0}
+  .sched td{
+    display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    border:0;padding:.28rem 0;width:100%;
+  }
+  .sched td[data-label]::before{
+    content:attr(data-label);flex:none;
+    font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
+  }
+  .sched td:first-child{font-size:1.2rem;padding-bottom:.5rem}
+  .sched tbody tr:hover{background:none}
+
+  /* --- horizontal scrollers beat cramped wrapping --- */
+  .tabs,.filters{
+    flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  }
+  .tabs::-webkit-scrollbar,.filters::-webkit-scrollbar{display:none}
+  /* 44px minimum touch target (WCAG 2.5.5) */
+  .tab,.filter{flex:none;min-height:44px;display:inline-flex;align-items:center}
+  .toggle button{min-height:44px}
+  .socials a,.lbox__btn,#toTop{min-width:44px;min-height:44px}
+  .filters{margin-bottom:1.8rem;padding-bottom:.2rem}
+
+  /* --- cards & figures --- */
+  .grid{gap:1rem}
+  .card__body{padding:1.3rem}
+  .card__media{aspect-ratio:16/10}
+  .feat{padding-top:1.5rem}
+  .figure--tall{aspect-ratio:3/4}
+  .figure__badge{padding:.7rem .9rem}
+  .figure__badge b{font-size:1.2rem}
+  .figure__cap{font-size:.54rem;padding:.6rem 1rem}
+
+  /* --- instructors: hover bios are unreachable on touch, so show them --- */
+  .sensei__img{aspect-ratio:1}
+  .sensei__img img{filter:none}
+  .sensei__info{
+    position:static;padding:1.2rem;
+    background:var(--ink-2);border-top:2px solid var(--crimson);
+  }
+  .sensei__bio{max-height:none;opacity:1;margin-top:.8rem;font-size:.84rem}
+  .sensei__dan{top:.8rem;right:.8rem}
+
+  /* --- pricing --- */
+  .price{padding:1.6rem}
+  .price__amt{font-size:2.6rem;margin:1.1rem 0 .25rem}
+  .price ul{margin:1.3rem 0 1.5rem;gap:.65rem;font-size:.88rem}
+  .toggle{width:100%}
+  .toggle button{flex:1;padding:.7rem .5rem;font-size:.58rem;letter-spacing:.14em}
+
+  /* --- stats --- */
+  .stats{grid-template-columns:1fr 1fr}
+  .stat{padding:1.5rem .8rem}
+  .stat b{font-size:2rem}
+  .stat small{font-size:.52rem;letter-spacing:.18em;margin-top:.5rem}
+
+  /* --- timeline --- */
+  .timeline{padding-left:1.4rem}
+  .tl{padding-bottom:2.2rem}
+  .tl::before{left:-1.4rem;margin-left:-5px}
+  .tl__year{font-size:1.6rem;margin-bottom:.3rem}
+  .tl__body figure{max-width:none;margin-top:.9rem}
+
+  /* --- quote / slider --- */
+  .quote blockquote{font-size:1.25rem;line-height:1.4}
+  .quote .mark{font-size:2.6rem;margin-bottom:.6rem}
+  .quote cite{margin-top:1.2rem;font-size:.58rem;letter-spacing:.2em}
+  .slider__slide{padding-inline:0}
+  /* dots stay 2px visually but get a 44px transparent hit area */
+  .slider__dots{gap:0}
+  .slider__dots button{
+    width:34px;height:44px;background:transparent;position:relative;
+  }
+  .slider__dots button::after{
+    content:"";position:absolute;left:4px;right:4px;top:50%;margin-top:-1px;height:2px;
+    background:rgba(255,255,255,.22);transition:background .4s,left .4s,right .4s;
+  }
+  .slider__dots button.is-on{width:52px;background:transparent}
+  .slider__dots button.is-on::after{background:var(--gold)}
+
+  /* --- gallery + lightbox controls moved out from under the image --- */
+  .gal{gap:.4rem}
+  .gal__cap{opacity:1;transform:none;padding:.7rem;font-size:.54rem}
+  .gal__plus{opacity:1;transform:scale(.8);width:34px;height:34px;margin:-17px 0 0 -17px}
+  .lbox{padding:3.5rem .8rem 6rem}
+  .lbox img{max-height:66vh}
+  .lbox__btn{width:46px;height:46px}
+  .lbox__prev{left:auto;right:calc(50% + .4rem);top:auto;bottom:1rem;margin:0}
+  .lbox__next{right:calc(50% - 46px - .4rem);top:auto;bottom:1rem;margin:0}
+  .lbox__cap{bottom:4.2rem;font-size:.58rem}
+
+  /* --- accordion / forms --- */
+  .acc__btn{padding:1.2rem 2.2rem 1.2rem 0;font-size:1.02rem;min-height:48px}
+  .acc__panel > div{padding:0 0 1.3rem;font-size:.9rem}
+  .form{gap:1.4rem}
+  .form__row{grid-template-columns:1fr;gap:1.4rem}
+  .field input,.field select,.field textarea{font-size:16px} /* stops iOS zoom-on-focus */
+  .field label{font-size:.92rem}
+
+  /* --- kun list --- */
+  .kun li{padding:1.1rem 0}
+  .kun b{font-size:1rem}
+  .kun .jp{font-size:.85rem}
+
+  /* --- marquee / footer --- */
+  .marquee{padding:.7rem 0}
+  .marquee span{font-size:.6rem;letter-spacing:.2em;padding-inline:1rem;gap:1rem}
+  .footer{padding-top:2.8rem}
+  .footer__grid{gap:2rem}
+  .footer__kanji{font-size:11rem}
+  .footer__bot{flex-direction:column;align-items:flex-start;gap:.5rem;font-size:.68rem}
+  .info-list li{gap:.9rem}
+  .info-list .ico{width:36px;height:36px;font-size:.8rem}
+  .partners{gap:2rem}
+  .partners img{height:40px}
+  #toTop{width:44px;height:44px}
+
+  /* parallax offsets read as misalignment on a narrow screen */
+  [data-parallax]{transform:none!important}
+}
+
+/* --- very small phones (iPhone SE and similar) --- */
+@media (max-width:380px){
+  :root{--shell:min(1240px,100% - 1.8rem);--shell-narrow:min(880px,100% - 1.8rem)}
+  .brand__sub{display:none}
+  .stats{grid-template-columns:1fr}
+  .mnav__list a{font-size:1.4rem}
+}
+
+/* --- any touch device: hover-only content must still be reachable --- */
+@media (hover:none){
+  .sensei__bio{max-height:none;opacity:1;margin-top:.8rem}
+  .gal__cap{opacity:1;transform:none}
+  .map-embed{filter:none}
+  /* no real hover on touch: solid buttons stay filled, outline ones stay
+     unfilled, so a tap-and-hold never makes the label vanish */
+  .btn:hover::before{transform:translateY(0)}
+  .btn--ghost:hover::before,.btn--on-dark:hover::before{transform:translateY(101%)}
+  .btn:hover{color:var(--b-fg);border-color:var(--b-bd)}
+  .card:hover{transform:none;box-shadow:none}
+}
+
+/* --- landscape phones: tall hero padding eats the whole screen --- */
+@media (max-height:520px) and (orientation:landscape){
+  .hero__body{padding-block:6rem 2rem}
+  .phero__body{padding-block:6rem 2rem}
+  .scroll-cue{display:none}
 }

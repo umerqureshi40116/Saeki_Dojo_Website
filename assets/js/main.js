@@ -11,6 +11,12 @@
 
   /* Entrance animations must not play behind the preloader, so anything that
      animates on first paint waits for the curtain to lift. */
+  var TOUCH = window.matchMedia('(hover:none)').matches;
+  // Phones feel slow far sooner than desktops, so the deliberate pauses
+  // that read as polish on a laptop are cut roughly in half here.
+  var DWELL = TOUCH ? 420 : 900;
+  var DELAY_SCALE = TOUCH ? 0.45 : 1;
+
   var readyQueue = [];
   function onReady(fn) {
     if (document.documentElement.classList.contains('is-ready')) fn();
@@ -60,10 +66,10 @@
     }
 
     document.body.classList.add('is-locked');
-    if (document.readyState === 'complete') { setTimeout(finish, REDUCED ? 0 : 900); }
-    else { window.addEventListener('load', function () { setTimeout(finish, REDUCED ? 0 : 900); }); }
+    if (document.readyState === 'complete') { setTimeout(finish, REDUCED ? 0 : DWELL); }
+    else { window.addEventListener('load', function () { setTimeout(finish, REDUCED ? 0 : DWELL); }); }
     // hard safety net so the page never stays hidden
-    setTimeout(finish, 4500);
+    setTimeout(finish, TOUCH ? 2600 : 4500);
   })();
 
   /* ---------- 2. SCROLL REVEAL ---------- */
@@ -80,7 +86,7 @@
         entries.forEach(function (e) {
           if (!e.isIntersecting) return;
           var el = e.target;
-          var delay = parseInt(el.getAttribute('data-delay') || '0', 10);
+          var delay = parseInt(el.getAttribute('data-delay') || '0', 10) * DELAY_SCALE;
           setTimeout(function () { el.classList.add('is-in'); }, delay);
           io.unobserve(el);
         });
@@ -506,7 +512,9 @@
 
   /* ---------- 18. PAGE TRANSITION CURTAIN ---------- */
   (function transitions() {
-    if (REDUCED) return;
+    // On touch the 480ms curtain reads as lag rather than polish, so taps
+    // navigate immediately instead.
+    if (REDUCED || window.matchMedia('(hover:none)').matches) return;
     var curtain = $('#curtain');
     if (!curtain) return;
     $$('a[href]').forEach(function (a) {
