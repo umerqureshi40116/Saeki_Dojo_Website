@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Page not found — Saeki Dojo</title>
+<meta name="description" content="That page could not be found. Return to Saeki Dojo, Ottawa JKA Canada.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0b0b0d">
+<link rel="icon" href="/assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+  .nf{position:relative;min-height:100svh;display:grid;place-items:center;text-align:center;
+      background:var(--ink);color:var(--washi);overflow:hidden;padding:2rem 0}
+  .nf__bg{position:absolute;inset:0;background:url('/assets/img/hero-3.webp') center/cover;opacity:.22;filter:grayscale(.6)}
+  .nf::after{content:"";position:absolute;inset:0;
+      background:radial-gradient(70% 90% at 50% 50%,rgba(11,11,13,.55),rgba(11,11,13,.97))}
+  .nf__body{position:relative;z-index:3;width:var(--shell-narrow)}
+  .nf__kanji{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1;
+      font-family:var(--ff-jp);font-size:clamp(12rem,36vw,28rem);line-height:.8;
+      color:rgba(255,255,255,.04);pointer-events:none;user-select:none}
+  .nf__code{font-family:var(--ff-display);font-size:clamp(4rem,16vw,10rem);line-height:1;
+      font-weight:500;color:var(--gold-lt);margin-bottom:.4rem}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+
+<main class="nf">
+  <div class="nf__bg"></div>
+  <div class="nf__kanji jp" aria-hidden="true">無</div>
+  <div class="nf__body">
+    <div class="nf__code">404</div>
+    <p class="eyebrow eyebrow--center" style="justify-content:center">Page not found</p>
+    <h1 class="h-lg" style="margin-bottom:1.4rem">This one isn't in the syllabus.</h1>
+    <p class="lead" style="max-width:46ch;margin:0 auto 2.6rem">
+      The page you were looking for has moved or never existed. Return to the dojo and
+      start again — no shame in resetting the stance.
+    </p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a class="btn btn--crimson" href="/" data-magnetic><span>Back to home</span><span class="btn__arrow">&rarr;</span></a>
+      <a class="btn btn--on-dark" href="/contact"><span>Contact the dojo</span></a>
+    </div>
+    <p class="muted" style="margin-top:3rem;font-size:.82rem">
+      475 Cambridge St South, Ottawa &nbsp;·&nbsp; <a href="tel:+16138047817" style="color:var(--gold)">613-804-7817</a>
+    </p>
+  </div>
+</main>
+
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

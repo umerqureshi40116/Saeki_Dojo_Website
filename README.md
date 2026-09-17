@@ -8,17 +8,16 @@ build step, no dependencies.
 
 ## Running it
 
-Any static server works. From the project root:
+The site uses extensionless URLs (`/about`, not `/about.html`) to match Vercel's
+`cleanUrls`. Plain `python -m http.server` cannot resolve those, so use the included
+dev server, which mirrors the deploy exactly:
 
 ```bash
-python -m http.server 5173
+python serve.py          # http://127.0.0.1:5173
 ```
 
-Then open <http://127.0.0.1:5173>.
-
-In VS Code, the *Live Server* extension on `index.html` also works and reloads on save.
-Opening the files directly via `file://` mostly works, but the Google Maps embed on the
-contact page and the page-transition effect need a server.
+`npx serve` and `vercel dev` also handle clean URLs correctly. Opening files directly
+via `file://` will **not** work now that links are extensionless.
 
 Fonts load from Google Fonts, so keep a network connection for the intended typography.
 Everything else is local.
@@ -60,10 +59,36 @@ Recommended: 1920×1080, H.264, 8–15s, silent, under ~8 MB.
 Every image ships as both JPEG/PNG and WebP, wrapped in `<picture>` with explicit
 `width`/`height` so nothing shifts as the page loads.
 
+## Deploying to Vercel
+
+No build step. Import the repo and accept the defaults:
+
+| Setting | Value |
+| --- | --- |
+| Framework Preset | Other |
+| Build Command | *(empty)* |
+| Output Directory | `./` |
+| Install Command | *(empty)* |
+
+`vercel.json` handles the rest: clean URLs, a year-long immutable cache on images,
+revalidation on CSS/JS, security headers, and `X-Robots-Tag: noindex`.
+
+### This deploy is intentionally not indexable
+
+It is a prototype, so it should not compete with — or be mistaken for — the dojo's real
+site. Three layers enforce that: a `noindex, nofollow` meta tag on every page, the
+`X-Robots-Tag` header, and `Disallow: /` in `robots.txt`. Link previews and Open Graph
+cards still work normally; only search crawling is blocked.
+
+To make it a real public site: remove the meta tag from each page, drop the
+`X-Robots-Tag` header from `vercel.json`, restore `robots.txt` (the sitemap line is
+commented out, ready), and set the production domain everywhere (see below).
+
 ## Before deploying
 
-- [ ] **Set the real domain.** Open Graph tags, canonical URLs, `sitemap.xml` and the
-      JSON-LD block all currently use `https://www.ottawajka.com`.
+- [ ] **Set the real domain.** Open Graph tags and the JSON-LD block currently use
+      `https://saeki-dojo-website.vercel.app`. If your Vercel project name differs, this
+      needs updating; `sitemap.xml` still points at the production domain.
 - [ ] **Verify the geo coordinates** in the JSON-LD on `index.html` (currently
       approximate: 45.4045, −75.6965).
 - [ ] **Connect the contact form.** `contact.html` posts to

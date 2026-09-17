@@ -1,4 +1,9 @@
-User-agent: *
-Allow: /
+# Design prototype — intentionally kept out of search engines so it does not
+# compete with or get mistaken for the dojo's live site.
+# When this goes live on the real domain: allow crawling, restore the sitemap
+# reference below, and remove the noindex meta tag from each page.
 
-Sitemap: https://www.ottawajka.com/sitemap.xml
+User-agent: *
+Disallow: /
+
+# Sitemap: https://www.ottawajka.com/sitemap.xml
